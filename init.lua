@@ -165,7 +165,7 @@ do
   vim.o.inccommand = 'split'
 
   -- Show which line your cursor is on
-  vim.o.cursorline = false
+  vim.o.cursorline = true
 
   -- Minimal number of screen lines to keep above and below the cursor.
   vim.o.scrolloff = 10
@@ -386,17 +386,58 @@ do
   --
   -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
   vim.pack.add { gh 'folke/tokyonight.nvim' }
+  vim.pack.add { { src = "https://github.com/catppuccin/nvim", name = "catppuccin" } }
+  vim.pack.add { { src = "https://github.com/rebelot/kanagawa.nvim", name = "kanagawa" } }
   ---@diagnostic disable-next-line: missing-fields
   require('tokyonight').setup {
     styles = {
       comments = { italic = false }, -- Disable italics in comments
     },
   }
+  require('catppuccin').setup {
+    flavour = 'frappe', -- use lighter frappe scheme
+    styles = {
+      comments = {} -- don't use italic style for comments
+    }
+  }
+  require('kanagawa').setup {
+    commentStyle = { italic = false }, -- don't use italic style for comments
+    theme = "wave",              -- Load "wave" theme
+    background = {               -- map the value of 'background' option to a theme
+        dark = "wave",           -- try "dragon" !
+        light = "lotus"
+    },
+    overrides = function(colors) -- change NrLine and Sign columns to have standard bg color
+      return {
+        LineNr        = { bg = colors.palette.sumiInk3 },
+        CursorLineNr  = { bg = colors.palette.sumiInk5, fg = colors.palette.fujiWhite },
+        SignColumn    = { bg = colors.palette.sumiInk3 },
+
+        -- Built‑in diagnostic signs
+        -- DiagnosticSignError = { bg = colors.palette.sumiInk3 },
+        -- DiagnosticSignWarn  = { bg = colors.palette.sumiInk3 },
+        -- DiagnosticSignInfo  = { bg = colors.palette.sumiInk3 },
+        -- DiagnosticSignHint  = { bg = colors.palette.sumiInk3 },
+
+        -- Git signs (gitsigns)
+        GitSignsAdd    = { bg = colors.palette.sumiInk3 },
+        GitSignsChange = { bg = colors.palette.sumiInk3 },
+        GitSignsDelete = { bg = colors.palette.sumiInk3 },
+
+        -- Legacy LSP sign groups (some servers still use these)
+        -- LspDiagnosticsSignError       = { bg = colors.palette.sumiInk3 },
+        -- LspDiagnosticsSignWarning     = { bg = colors.palette.sumiInk3 },
+        -- LspDiagnosticsSignInformation = { bg = colors.palette.sumiInk3 },
+        -- LspDiagnosticsSignHint        = { bg = colors.palette.sumiInk3 }
+      }
+    end,
+  }
 
   -- Load the colorscheme here.
   -- Like many other themes, this one has different styles, and you could load
   -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-  vim.cmd.colorscheme 'tokyonight-night'
+  -- vim.cmd.colorscheme 'tokyonight-night'
+  vim.cmd.colorscheme 'kanagawa'
 
   -- Highlight todo, notes, etc in comments
   vim.pack.add { gh 'folke/todo-comments.nvim' }
